@@ -29,8 +29,7 @@ blobs.get('/:id', async (req, res) => {
         }
     }
     catch (err) {
-        console.error("There was an error!");
-        res.status(500).send();
+        res.status(404).send();
     }
 });
 
