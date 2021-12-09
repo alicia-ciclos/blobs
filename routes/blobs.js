@@ -22,10 +22,16 @@ blobs.get('/', async (req, res) => {
 });
 
 blobs.get('/:id', async (req, res) => {
-    const doc = await models.Post.findById(req.params.id).catch(err => ({
-        "error": err,
-    }));
-    res.send(await formatPost(doc));
+    try {
+        const doc = await models.Post.findById(req.params.id);
+        if(doc) {
+            res.send(await formatPost(doc));
+        }
+    }
+    catch (err) {
+        console.error("There was an error!");
+        res.status(500).send();
+    }
 });
 
 blobs.post('/new', auth, async (req, res) => {
