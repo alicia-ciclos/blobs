@@ -14,6 +14,6 @@ app.use(express.urlencoded({ extended: true })) // for parsing application/x-www
 app.use('/blobs', routes.blobs);
 app.use('/users', routes.users);
 
-app.listen(process.env.LISTENING_PORT, () => {
-    console.log(`Listening on ${process.env.LISTENING_PORT}`)
+app.listen(process.env.PORT || 3030, () => {
+    console.log(`Listening on ${process.env.PORT}`)
 });
