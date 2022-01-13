@@ -30,6 +30,6 @@ MONGO_URI="mongodb://127.0.0.1:27017/blobs_api"
 
 ### Inicio en modo desarrollo
 
-`$ npm start:dev`
+`$ npm run start:dev`
 
 Consultar la sección `scripts` en `package.json` para ver otras operaciones disponibles.
