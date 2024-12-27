@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
-const migrations = require('../db/migrations');
+import { connect as _connect } from 'mongoose';
+import { migrate } from '../db/migrations.js';
 
-require('dotenv/config');
+import 'dotenv/config';
 
 async function connect() {
     const connectOptions = {
@@ -10,11 +10,11 @@ async function connect() {
     };
 
     try {
-        await mongoose.connect(process.env.MONGO_URI, connectOptions);
+        await _connect(process.env.MONGO_URI, connectOptions);
         console.log(`Connected to database ${process.env.MONGO_URI}`);
         if(process.env.MIGRATE === "1") {
             console.log('Performing migrations:');
-            await migrations.migrate();
+            await migrate();
             console.log('Migrations complete');
         }
     }
@@ -23,6 +23,4 @@ async function connect() {
     }
 }
 
-module.exports = {
-    connect: connect,
-}
+export { connect };

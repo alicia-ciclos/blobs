@@ -1,15 +1,15 @@
-const express = require('express');
-const connection = require('./connection');
-const routes = require('../routes/routes');
+import express, { json, urlencoded, static as express_static } from 'express';
+import { connect } from './connection.js';
+import { blobs, users } from '../routes/routes.js';
 
-require('dotenv/config');
+import 'dotenv/config';
 
-connection.connect();
+connect();
 
 const app = express();
 
-app.use(express.json())                                 // for parsing application/json
-app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+app.use(json())                                 // for parsing application/json
+app.use(urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
 // Accept CORS from any domain (just for running locally!)
 app.use((req, res, next) => {
@@ -19,13 +19,13 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(express.static('public'));
+app.use(express_static('public'));
 
 app.get('/', async (req, res) => {
    res.send("OK");
 });
-app.use('/blobs', routes.blobs);
-app.use('/users', routes.users);
+app.use('/blobs', blobs);
+app.use('/users', users);
 
 app.listen(process.env.PORT || 3030, () => {
     console.log(`Listening on ${process.env.PORT}`)

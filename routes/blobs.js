@@ -1,20 +1,20 @@
-const express = require('express');
-const auth = require('./auth');
-const models = require("../models/models");
+import { Router } from 'express';
+import auth from './auth.js';
+import { User, Post, Client } from "../models/models.js";
 
-const blobs = express.Router();
+const blobs = Router();
 
 async function formatPost(post) {
     return {
         id:             post['_id'],
         creationDate:   post['creationDate'],
-        author:         await (models.User.findById(post['author']).then(data => data.userid)),
+        author:         await (User.findById(post['author']).then(data => data.userid)),
         text:           post['text'],
     }
 }
 
 blobs.get('/', async (req, res) => {
-    const posts = await models.Post.find();
+    const posts = await Post.find();
     const docs = posts.map(formatPost);
     Promise.all(docs).then((data) => {
         res.send(data);
@@ -23,7 +23,7 @@ blobs.get('/', async (req, res) => {
 
 blobs.get('/:id', async (req, res) => {
     try {
-        const doc = await models.Post.findById(req.params.id);
+        const doc = await Post.findById(req.params.id);
         if(doc) {
             res.send(await formatPost(doc));
         }
@@ -34,10 +34,10 @@ blobs.get('/:id', async (req, res) => {
 });
 
 blobs.post('/new', auth, async (req, res) => {
-    const doc = await models.Post.create({
+    const doc = await Post.create({
         text: req.body.text,
-        author: await models.User.findOne( { userid: req.body.author }),
-        clientToken: await models.Client.findOne({ clientToken: req.header('Client-Token') }),
+        author: await User.findOne( { userid: req.body.author }),
+        clientToken: await Client.findOne({ clientToken: req.header('Client-Token') }),
     }).catch(err => {
         console.log(err);
         res.status(401).send();
@@ -45,4 +45,4 @@ blobs.post('/new', auth, async (req, res) => {
     res.send(doc);
 });
 
-module.exports = blobs;
+export default blobs;

@@ -1,4 +1,4 @@
-const Client = require('../models/client');
+import Client from '../models/client.js';
 
 const auth = async function(req, res, next) {
     const token = req.header('Client-Token');
@@ -10,4 +10,4 @@ const auth = async function(req, res, next) {
     }
 }
 
-module.exports = auth;
+export default auth;

@@ -1,9 +1,9 @@
-const uuid = require('uuid');
-const connection = require('../app/connection');
-const models = require('../models/models');
+import { v4 } from 'uuid';
+import { connect } from '../app/connection.js';
+import { User, Client } from '../models/models.js';
 
 const users = [
-    new models.User({
+    new User({
         userid: "admin",
         fullName: "Admin User",
         email: "admin@localhost",
@@ -12,14 +12,14 @@ const users = [
 ];
 
 async function populate() {
-    await connection.connect();
-    await models.User.create(users).catch(err => console.log(err));
-    await models.Client.create({
+    await connect();
+    await User.create(users).catch(err => console.log(err));
+    await Client.create({
         clientName: "Demo API token",
-        clientToken: uuid.v4(),
-        user: await models.User.findOne({ userid: "admin" }),
+        clientToken: v4(),
+        user: await User.findOne({ userid: "admin" }),
     });
-    await models.Client.find().populate('user');
+    await Client.find().populate('user');
     console.log("Database populated successfully");
     process.exit(0);
 }

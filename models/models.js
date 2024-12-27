@@ -1,7 +1,5 @@
-"use strict";
+import Client from './client.js';
+import Post from './post.js';
+import User from './user.js';
 
-module.exports = {
-    Client: require('./client'),
-    Post: require('./post'),
-    User: require('./user'),
-}
+export { Client, Post, User };

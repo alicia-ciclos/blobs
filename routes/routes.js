@@ -1,6 +1,4 @@
-"use strict";
+import blobs from './blobs.js';
+import users from './users.js';
 
-module.exports = {
-    blobs: require('./blobs'),
-    users: require('./users'),
-};
+export { blobs, users };

@@ -1,9 +1,9 @@
-const connection = require('../app/connection');
-const migrations = require('./migrations');
+import { connect } from '../app/connection.js';
+import { migrate as _migrate } from './migrations.js';
 
 async function migrate() {
-    await connection.connect();
-    await migrations.migrate();
+    await connect();
+    await _migrate();
     process.exit(0);
 }
 
