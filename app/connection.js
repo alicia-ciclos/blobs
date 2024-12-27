@@ -14,7 +14,8 @@ async function connect() {
         console.log(`Connected to database ${process.env.MONGO_URI}`);
         if(process.env.MIGRATE === "1") {
             console.log('Performing migrations:');
-            migrations.migrate();
+            await migrations.migrate();
+            console.log('Migrations complete');
         }
     }
     catch(err) {
