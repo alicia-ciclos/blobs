@@ -9,15 +9,26 @@ const users = [
         email: "admin@localhost",
         privileged: true,
     }),
+    new User({
+        userid: "user",
+        fullName: "Regular User",
+        email: "user@localhost",
+        privileged: false,
+    }),
 ];
 
 async function populate() {
     await connect();
     await User.create(users).catch(err => console.log(err));
     await Client.create({
-        clientName: "Demo API token",
+        clientName: "Demo API token (admin)",
         clientToken: v4(),
         user: await User.findOne({ userid: "admin" }),
+    });
+    await Client.create({
+        clientName: "Demo API token (user)",
+        clientToken: v4(),
+        user: await User.findOne({ userid: "user" }),
     });
     await Client.find().populate('user');
     console.log("Database populated successfully");
